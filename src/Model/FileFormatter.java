@@ -1,5 +1,8 @@
 package Model;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -15,7 +18,7 @@ public class FileFormatter implements Formatter{
 		this.originalFile =file;
 		
 		//Working copy of original file
-		updatedFile = new NumericTextFile(this.originalFile.getContent());
+		updatedFile = new NumericTextFile(file);
 		
 		scanner = new Scanner(System.in);
 	}
@@ -54,7 +57,7 @@ public class FileFormatter implements Formatter{
 					break;
 				case 'd':
 					System.out.println("You chose 'd' - to save changes");
-					//TODO
+					saveChanges();
 					break;
 				default:
 					System.out.println("Invalid choice!");
@@ -111,7 +114,7 @@ public class FileFormatter implements Formatter{
 			updatedFile.appendToContent(lines[i]+'\n');
 		}
 		
-		System.out.println("The updated content after exchange is: ");
+		System.out.println("\nThe updated content after exchange is: ");
 		System.out.println(updatedFile.getContent());
 	}
 	
@@ -134,6 +137,31 @@ public class FileFormatter implements Formatter{
 
 	    updatedFile.swapChars(choice[0],choice[1],choice[2],choice[3]);
 	    
+	}
+	
+	private void saveChanges(){
+		updatedFile.validateContent();
+		if(updatedFile.getIsContentValid() == true){
+			System.out.println("The content will be saved...");
+			
+			
+			 File f=new File(updatedFile.getFilePath());
+			
+			 try{
+		            FileWriter fwriter = new FileWriter(f);
+		            BufferedWriter bwriter = new BufferedWriter(fwriter);
+		            bwriter.write(updatedFile.getContent().toString());
+		            bwriter.close();
+		         }
+		        catch (Exception e){
+		              e.printStackTrace();
+		         }
+			
+		}
+		else{
+			System.out.println("\nThe file has not been saved");
+		}
+
 	}
 
 }

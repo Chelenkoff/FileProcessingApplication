@@ -15,6 +15,8 @@ public class NumericTextFile {
 
 
 	private StringBuilder content;
+	private boolean isContentValid = true;
+	private String txtFilePath;
 	//	private FileFormatter formatter;
 
 	public NumericTextFile(String pathToFile){
@@ -27,9 +29,16 @@ public class NumericTextFile {
 	public NumericTextFile(StringBuilder content){
 		this.content = content;
 	}
+	public NumericTextFile(NumericTextFile file){
+		this.content = file.content;
+		this.txtFilePath = file.txtFilePath;
+		this.isContentValid = file.isContentValid;
+	}
 
 	private void loadFile(String pathToFile){
 
+		txtFilePath = pathToFile;
+		
 		try(BufferedReader br = new BufferedReader(new FileReader(pathToFile))) {
 
 			if(validateExtension(pathToFile) == false) return;
@@ -75,14 +84,18 @@ public class NumericTextFile {
 
 				if(lines[i].trim().length() == 0){
 					System.out.printf("\nLine %d is empty!",i+1);
+					isContentValid = false;
 					continue;
 				}
 
 				if( lines[i].charAt(0) == '\t' ){
 					System.out.printf("\nLine %d starts with tabs!",i+1);
+					isContentValid = false;
 				}
 				else if(Character.isWhitespace(lines[i].charAt(0))){
 					System.out.printf("\nLine %d starts with whitespaces!",i+1);
+					isContentValid = false;
+
 				}
 
 				StringTokenizer st = new StringTokenizer(lines[i],delim);
@@ -91,11 +104,15 @@ public class NumericTextFile {
 
 					if(chars[0] == '0'){
 						System.out.printf("\nNumber at line %d starts with 0",i+1);
+						isContentValid = false;
+
 					}
 
 					for (char c : chars) {
 						if (!Character.isDigit(c)){
 							System.out.printf("\nCharacter '%c' at line %d is not allowed",c,i+1);
+							isContentValid = false;
+
 						}
 					}
 
@@ -104,13 +121,24 @@ public class NumericTextFile {
 
 			}
 
+
+		}
+		
+		if(isContentValid){
+			System.out.println("\nThe content is valid!");
+		}
+		else{
+			System.out.println("\nThe content is invalid!");
 		}
 	}
 
 	public StringBuilder getContent() {
 		return content;
 	}
-
+	
+	public boolean getIsContentValid(){
+		return isContentValid;
+	}
 	public void clearContent(){
 		content = new StringBuilder();
 	}
@@ -121,6 +149,10 @@ public class NumericTextFile {
 
 	public void appendToContent(String str){
 		content.append(str);
+	}
+	
+	public String getFilePath(){
+		return txtFilePath;
 	}
 
 	public char getCharAt(int row, int charIndex){

@@ -39,6 +39,9 @@ public class FileProcessingController {
 				
 				formatter.showFormatterMenu();
 			}
+			else{
+				System.out.println("The file is empty!");
+			}
 		}while(true);
 
 	}
