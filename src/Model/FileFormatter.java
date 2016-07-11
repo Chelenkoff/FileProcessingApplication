@@ -49,11 +49,11 @@ public class FileFormatter implements Formatter{
 					break;
 				case 'b':
 					System.out.println("You chose 'b' - to switch lines");
-					switchLines();
+					swapLines();
 					break;
 				case 'c':
 					System.out.println("You chose 'c' - to switch numbers at specified indexes");
-					switchChars();
+					swapChars();
 					break;
 				case 'd':
 					System.out.println("You chose 'd' - to save changes");
@@ -70,7 +70,7 @@ public class FileFormatter implements Formatter{
 		}while(true);
 	}
 	
-	private void switchLines(){
+	private void swapLines(){
 		System.out.println("Enter indexes of the lines you would like to swap (ex. 1 3):");
 		
 		
@@ -88,39 +88,13 @@ public class FileFormatter implements Formatter{
 	    choice[0]--;
 	    choice[1]--;
 		
-		String[] lines = updatedFile.getContent().toString().split("\\n");
-		String firstLine = null;
-		String secondLine = null ;
-		try{
-		firstLine = lines[choice[0]];
-		secondLine = lines[choice[1]];
-		}
-		catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println("There are no such rows!");
-			return;
-		}
-		updatedFile.clearContent();
-		for(int i = 0 ; i < lines.length; i++){
-			
-			if(i == choice[0]){
-				updatedFile.appendToContent(secondLine+'\n');
-				continue;
-			}
-			if(i == choice[1]){
-				updatedFile.appendToContent(firstLine+'\n');
-				continue;
-			}
-			
-			updatedFile.appendToContent(lines[i]+'\n');
-		}
-		
-		System.out.println("\nThe updated content after exchange is: ");
-		System.out.println(updatedFile.getContent());
+		updatedFile.swapLines(choice[0], choice[1]);
 	}
 	
-	private void switchChars(){
-		System.out.println("Enter indexes of the lines and indexes of chars you would like to swap\n"
-				+ "Example user input: <first_line_index> <first_line_number_index> <second_line_index> <second_line_number_index>");
+	private void swapChars(){
+		System.out.println("Enter indexes of the lines and indexes of chars you would like to swap");
+		System.out.println("Example user input:");
+		System.out.println("<first_line_index> <first_line_number_index> <second_line_index> <second_line_number_index>");
 		System.out.println("Your input:");
 		
 	    int[] choice = new int[4];
@@ -150,7 +124,7 @@ public class FileFormatter implements Formatter{
 			 try{
 		            FileWriter fwriter = new FileWriter(f);
 		            BufferedWriter bwriter = new BufferedWriter(fwriter);
-		            bwriter.write(updatedFile.getContent().toString());
+		          //  bwriter.write(updatedFile.getContent().toString());
 		            bwriter.close();
 		         }
 		        catch (Exception e){

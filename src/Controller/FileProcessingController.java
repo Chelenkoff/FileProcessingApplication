@@ -31,9 +31,9 @@ public class FileProcessingController {
 
 			file = new NumericTextFile(pathToFile);
 
-			if(file.getContent() != null && file.getContent().length() != 0){
+			if(file.getContentLines() != null && file.getContentLines().size() != 0){
 				System.out.println("The content of the file is:");
-				System.out.println(file.getContent().toString());
+				file.toString();
 				
 				formatter = new FileFormatter(file);
 				
