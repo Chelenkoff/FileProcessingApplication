@@ -124,7 +124,11 @@ public class FileFormatter implements Formatter{
 			 try{
 		            FileWriter fwriter = new FileWriter(f);
 		            BufferedWriter bwriter = new BufferedWriter(fwriter);
-		          //  bwriter.write(updatedFile.getContent().toString());
+		            
+		            for (String line : updatedFile.getContentLines()) {
+		            	
+		            	bwriter.write(line + '\n');
+					}
 		            bwriter.close();
 		         }
 		        catch (Exception e){
